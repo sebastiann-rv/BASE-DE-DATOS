@@ -1,0 +1,59 @@
+CREATE TABLE [dbo].[Usuario] (
+    [ID_Usuario]      INT           IDENTITY (1, 1) NOT NULL,
+    [Identificacion_usua]	INT	NULL,	
+    [Nombre_usuario]       NVARCHAR (50) NULL,
+    [Apellido_usuario]      NVARCHAR (50) NULL,
+    [Fecha_nacimiento] DATE      NULL,
+	[Correo_usuario]	NVARCHAR (50) NULL,
+	[Contraseña_usuario]	NVARCHAR (50) NULL
+    PRIMARY KEY CLUSTERED ([ID_Usuario] ASC)
+	)
+
+
+	CREATE TABLE [dbo].[Categoria](
+	[ID_categoria]	INT		IDENTITY (1, 1)	NOT NULL,
+	[Identificacion_cate]	INT	NULL,
+	[Nombre_categoria] NVARCHAR (50) NULL
+	PRIMARY KEY CLUSTERED	([ID_categoria]	ASC)
+	)
+
+	CREATE TABLE [dbo].[Permanencia_Academica](
+	[ID_Permanencia]	INT NOT NULL,
+	[Identificacion_Perma]	INT NULL,
+	[Nombre_permanencia]	NVARCHAR (50) NULL
+	PRIMARY KEY CLUSTERED ([ID_Permanencia] ASC)
+	)
+
+	CREATE TABLE [dbo].[Usuario_Area](
+	[ID_Usuario]	INT NOT NULL,
+	[Identificacion_usua]	INT NULL,
+	[ID_Permanencia]	INT NOT NULL
+	CONSTRAINT [FK_dbo.Usuario_Area_dbo.Usuario_ID_Usuario] FOREIGN KEY ([ID_Usuario]) 
+        REFERENCES [dbo].[Usuario] ([ID_Usuario]) ON DELETE CASCADE,
+	CONSTRAINT [FK_dbo.Usuario_Area_dbo.Permanencia_Academica_ID_Permanencia]	FOREIGN KEY (ID_Permanencia)
+		REFERENCES [dbo].[Permanencia_Academica] ([ID_Permanencia])	ON DELETE CASCADE
+	)
+
+	CREATE TABLE [dbo].[Trabajos](
+	[ID_Permanencia]	INT NOT NULL,
+	[Identificacion_Perma]	INT NULL,
+	[Sede_Permanencia]	INT NOT NULL,
+	[Trabajos]	NVARCHAR (50) NULL,
+	[Fecha_permanencia]	DATE NULL,
+	[Hora_permanencia]	TIME(7)	NULL,
+	[Nombre_encargado]	NVARCHAR (50) NULL
+	CONSTRAINT	[FK_dbo.Trabajos_dbo.Permanencia_Academica_ID_Permanencia]	FOREIGN KEY (ID_Permanencia)
+		REFERENCES [dbo].[Permanencia_Academica]	([ID_Permanencia])	ON DELETE CASCADE
+	)
+
+	CREATE TABLE [dbo].[Areas](
+	[ID_categoria]	INT NOT NULL,
+	[Identificacion_cate]	INT NULL,
+	[Sede]	INT	NOT NULL,
+	[Area]	NVARCHAR(50) NULL,
+	[Fecha]	DATE NULL,
+	[Hora]	TIME(7) NULL,
+	[Valor]	INT NULL
+	CONSTRAINT [FK_Areas_dbo.Categoria_ID_categoria]	FOREIGN KEY (ID_categoria)
+		REFERENCES [dbo].[Categoria]	(ID_categoria)	ON DELETE CASCADE
+	)
